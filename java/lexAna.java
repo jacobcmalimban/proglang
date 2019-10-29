@@ -116,6 +116,12 @@ public class lexAna {
 	 *
 	 */
 	private static void addChar() {
+		if(lexLen <= 98) {
+			lexeme[lexLen++] = nextChar;
+			lexeme[lexLen] = '\u0000';
+		} else {
+			System.out.println("Error: Lexeme too long");
+		}
 	}
 
 	/**
@@ -124,6 +130,24 @@ public class lexAna {
 	 *
 	 */
 	private static void getChar() {
+		try {
+			nextChar = line.charAt(0);
+			line = line.substring(1);
+
+			// nextChar is printable?
+			if((int) nextChar > 32 && (int)nextChar != 127) {
+				if(Character.isLetter(nextChar))
+					charClass = CharClass.LETTER;
+				else if(Character.isDigit(nextChar))
+					charClass = CharClass.DIGIT;
+				else
+					charClass = CharClass.UNKNOWN;
+				return;
+			}
+		} catch(Exception e){}
+
+		// either end of file or whitespace
+		charClass = CharClass.END_OF_FILE;
 	}
 
 	/**
