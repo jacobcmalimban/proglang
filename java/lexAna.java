@@ -73,6 +73,41 @@ public class lexAna {
 	 *
 	 */
 	private static Token lookup(char ch) {
+		switch(ch) {
+			case '=':
+				addChar();
+				nextToken = Token.ASSIGN_OP;
+				break;
+			case '+':
+				addChar();
+				nextToken = Token.ADD_OP;
+				break;
+			case '-':
+				addChar();
+				nextToken = Token.SUB_OP;
+				break;
+			case '*':
+				addChar();
+				nextToken = Token.MULT_OP;
+				break;
+			case '/':
+				addChar();
+				nextToken = Token.DIV_OP;
+				break;
+			case '(':
+				addChar();
+				nextToken = Token.LEFT_PAREN;
+				break;
+			case ')':
+				addChar();
+				nextToken = Token.RIGHT_PAREN;
+				break;
+			default:
+				addChar();
+				nextToken = Token.END_OF_FILE;
+				break;
+		}
+		return nextToken;
 	}
 
 	/**
