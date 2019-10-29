@@ -166,5 +166,46 @@ public class lexAna {
 	 *
 	 */
 	public static Token lex() {
+		lexLen = 0;
+		getNonBlank();
+		switch(charClass) {
+			case LETTER:
+				do {
+					addChar();
+					getChar();
+				} while(charClass == CharClass.LETTER || charClass == CharClass.DIGIT);
+
+				nextToken = Token.IDENT;
+				break;
+
+			case DIGIT:
+				do {
+					addChar();
+					getChar();
+				} while(charClass == CharClass.DIGIT);
+
+				nextToken = Token.INT_LIT;
+				break;
+
+			case UNKNOWN:
+				lookup(nextChar);
+				getChar();
+				break;
+
+			case END_OF_FILE:
+				for(int i = 0; i<80; i++)
+					System.out.print("*");
+				System.out.println();
+
+				nextToken = Token.END_OF_FILE;
+				lexeme[0] = 'E';
+				lexeme[1] = 'O';
+				lexeme[2] = 'F';
+				lexeme[3] = '\u0000';
+				lexLen = 4;
+				break;
+		}
+		System.out.printf("%s%-20s%s%s%n", "Next Token is: ", nextToken, "next lexeme is ", String.valueOf(lexeme).substring(0, lexLen));
+		return nextToken;
 	}
 }
