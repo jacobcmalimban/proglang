@@ -15,7 +15,7 @@ public class prs {
 
 	// variables
 	static	CharClass charClass;
-	static	Token token;
+	static	Token nextToken;
 	static	String fileName = "lexInput.txt";
 // "front.in";
 	static	String line = null;
@@ -131,6 +131,12 @@ public class prs {
 
 		// parse first term
 		term();
+
+		while(nextToken == ADD_OP || nextToken == SUB_OP) {
+			lex();
+			term();
+		}
+		System.out.println("Exit <expr>");
 	}
 
 	/**
