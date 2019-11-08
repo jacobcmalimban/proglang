@@ -6,7 +6,7 @@
 import java.io.*;
 import java.lang.Character;
 
-public class prs {
+public class Parser {
 
 /** /
 	// definitions
@@ -51,17 +51,6 @@ public class prs {
 				nextToken = LexicalAnalyzer.lex();
 
 				tokenLogic();
-
-/** /
-				System.out.println("Input: " + line);
-				getChar();
-
-				for(char ch : line.toCharArray()) {
-					LexicalAnalyzer.lex();
-					if(nextToken == Token.END_OF_LINE)
-						break;
-				}
-/**/
 			}
 
 			// end of file reached
@@ -92,22 +81,8 @@ public class prs {
 				case ASSIGN_OP:
 					assign();
 					break;
-				case ADD_OP:
-					break;
-				case SUB_OP:
-					break;
-				case MULT_OP:
-					break;
-				case DIV_OP:
-					break;
 				case LEFT_PAREN:
 					factor();
-					break;
-				case RIGHT_PAREN:
-					break;
-				case END_OF_LINE:
-					break;
-				case END_OF_FILE:
 					break;
 			}
 		}
@@ -185,7 +160,7 @@ public class prs {
 				if(nextToken == Token.RIGHT_PAREN)
 					nextToken = LexicalAnalyzer.lex();
 				else
-System.out.println("Error");					//error();
+System.out.println("Error, Right Paren not found");					//error();
 			}
 		}
 		System.out.println("Exit <factor>");

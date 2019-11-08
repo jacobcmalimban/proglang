@@ -205,9 +205,11 @@ public class LexicalAnalyzer {
 				break;
 
 			case END_OF_LINE:
+/** /
 				for(int i = 0; i<80; i++)
 					System.out.print("*");
 				System.out.println();
+/**/
 				EOL();
 				return nextToken = Token.END_OF_LINE;
 		}
