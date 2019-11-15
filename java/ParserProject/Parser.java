@@ -47,7 +47,7 @@ public class Parser {
 			while((line = bReader.readLine()) != null) {
 				System.out.println("Parsing the statement: "+line);
 				LexicalAnalyzer.line = line;
-				LexicalAnalyzer.getChar();
+				LexicalAnalyzer.EOL();
 				nextToken = LexicalAnalyzer.lex();
 
 				tokenLogic();
