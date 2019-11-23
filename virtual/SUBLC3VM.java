@@ -105,5 +105,23 @@ public class SUBLC3VM {
 		if(vars.get(var) < 1)
 			basePointer = findLabel(label);
 	}
+
+	// other controls
+	private static void JMP(String label) {
+		basePointer = findLabel(label);
+	}
+	// 
+	private static boolean chkIdent(String ident) {
+		String verified;
+		char c = ident.charAt(0);
+		// starts with a letter
+		If(c >= a && c <= z || c >= A && c <=Z)
+			verified += c;
+		else
+			return false;
+
+		// { letter | digit | _ }
+		
+	}
 }
 
