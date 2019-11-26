@@ -1,0 +1,9 @@
+# Programming
+1 . Define a main (.hs)
+
+# Compiling
+ghc --make [programName] (no hs)
+
+# ghci
+:t [function]
+:quit
