@@ -100,3 +100,10 @@ fctr13n17 = [x
 srtst = sort [53,26,4,25,14,48,14,48,69]
 sumLst = zipWith (+) srtst ( reverse ( 2:srtst )) -- add sorted List to reverse
 --			2 truncated from end because zipWith only elements that exist in other list, index must exist in both
+
+-- filters
+priGr5 = filter (>5) morPri
+eveneg50 = takeWhile (>= -50) [-2,-4..]
+
+-- apply l(eft)/r to other 
+addadLst = foldl (+) 2 morPri -- ( ) op happens to all of the elements
