@@ -95,6 +95,12 @@ fctr13n17 = [x
     , x `mod` 17 == 0 -- and x divisible by 17
     ]
 
+xByY = [[x*y
+    | y <- [1..10]
+        ]
+    | x <- [1..10]
+    ]
+
 
 -- list func
 srtst = sort [53,26,4,25,14,48,14,48,69]
@@ -107,3 +113,36 @@ eveneg50 = takeWhile (>= -50) [-2,-4..]
 
 -- apply l(eft)/r to other 
 addadLst = foldl (+) 2 morPri -- ( ) op happens to all of the elements
+
+
+-- tuple
+twoPl1 = (2, "Pl1")
+jDoe = ("John Doe", 42, 'M')
+doesName = fst3 jDoe
+doesAge = snd3 jDoe
+
+
+daNaem = ["Alice", "Bob", "Charlie"]
+naughtMemAddr = ["1123 West", "4565 East", "7890 Central"]
+daAddr = zip daNaem naughtMemAddr
+
+
+{- Functions
+    Definition
+        funcName :: (params) -> output
+    Pattern Matching
+        funcName (param1, p2, pn) = operations (returned Value)
+-}
+fst3 :: (a, b, c) -> a
+fst3 (x, _, _) = x
+
+snd3 :: (a, b, c) -> b
+snd3 (_, x, _) = x
+
+addn :: Int -> Int -> Int
+addn a b = a + b
+
+main = do
+    putStrLn "Who are you?"
+    youwu <- getLine
+    putStrLn ("Hello " ++ youwu)

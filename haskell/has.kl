@@ -7,3 +7,5 @@ ghc --make [programName] (no hs)
 # ghci
 :t [function]
 :quit
+:l [programName]
+:r
