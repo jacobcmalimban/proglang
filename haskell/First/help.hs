@@ -162,10 +162,10 @@ prdTo n = product [1..n]
 --  if statement
 oddish :: Int -> Bool
 oddish n
-    | mod n 2 == 0  = False
+    | mod n 2 /= 1  = False
     | otherwise = True
 
-elven n = (n `mod` 2 == 0)
+elven n = (n `mod` 2 /= 1)
 
 schlGrd :: Int -> String
 schlGrd age
@@ -209,6 +209,40 @@ strEql :: [Char] -> [Char] -> Bool
 strEql [] []            = True
 strEql (x:xs) (y:ys)    = x == y && strEql xs ys
 strEql _ _              = False
+
+--  function passing functions
+--              VVV
+mal8 :: (Int -> Int) -> Int
+mal8 func = func 8
+
+num8by4 = mal8 mul4
+
+-- function returning function
+-- addn :: Int -> (Int -> Int)
+addTres = addn 3
+
+nineThree = addTres 9
+
+threeAddList = map addTres [1..5]
+
+-- lambda, \x for receiving
+lambDbl = map (\x -> x*2)
+--             ^^^
+        [1.0,1.1..5]
+
+-- if then else
+tripOddNum x = 
+    if(mod x 2 /= 1)
+        then x
+        else x*3
+
+raelNum :: Int -> String
+raelNum n = case n of 
+    42 -> "only real number"
+    9 -> "3 squared"
+    _ -> "no"
+
+module 
 
 main = do
     putStrLn "Who are you?"
