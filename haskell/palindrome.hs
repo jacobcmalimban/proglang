@@ -1,3 +1,4 @@
+import Control.Monad
 
 {-
 
@@ -27,11 +28,21 @@ palinput x y
     | x         = y ++ " is a palindrome"
     | otherwise = y ++ " is not a palindrome"
 
+test x = putStrLn x
 
 main = do
+    putStrLn "Press q to quit"
+    line <- getLine
+    unless (line == "q") $ do
+      test "Hello cursed IO" -- let me work on IO!!!
+      main
+
+{-
+main = do
     putStrLn "Enter a string: "
-    npt <- getLine
 
-    
+--    npt <- cursedIO
 
-    palinput (testPalin npt (reverse npt)) npt
+    putStrLn "gafk"
+--    palinput (testPalin npt (reverse npt)) npt
+-}
