@@ -1,4 +1,3 @@
-import Control.Monad
 
 {-
 
@@ -25,8 +24,8 @@ testPalin _ _               = False
 
 palinput :: Bool -> String -> String
 palinput x y 
-    | x         = y ++ " is a palindrome"
-    | otherwise = y ++ " is not a palindrome"
+    | x         = "\"" ++ y ++ "\"" ++ " is a palindrome"
+    | otherwise = "\"" ++ y ++ "\"" ++ " is not a palindrome"
 
 {-
 main = do
