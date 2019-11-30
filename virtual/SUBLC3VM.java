@@ -1,9 +1,43 @@
+
 public class SUBLC3VM {
-	private static int basePointer;
+	private static int basePointer, stackPointer;
 	private static String[100] stack; 
 	private static HashMap<String, int> vars = new HashMap<String, int>();
 
 	public static void main(String[] args) {
+		
+		basePointer = stackPointer = 0;
+		
+		// scan in file name
+		System.out.print("Enter the file name:\n> ");
+		String fileName = "fileIn";
+		
+		// for each line, read into stack
+		try {
+			FileReader fReader = new FileReader(fileName);
+			BufferedReader bReader = new BufferedReader(fReader);
+			
+			while((line = bReader.readLine()) != null) {
+					if(stackPointer+1 > stack.length()) {
+						System.out.println("Program is too large");
+						return;
+					}
+						
+					stack[stackPointer++] = line;
+				}
+			}
+
+			// end of file reached
+			bReader.close();
+
+			System.out.println("Program read successfully!");
+		} catch (Exception e) {
+			System.out.println("Error - file unopenable or readers not initialized.");
+		}
+		
+		
+		// execute
+		
 	}
 
 	private static void ADD(String dest, String src1, String src2) {
@@ -112,7 +146,7 @@ public class SUBLC3VM {
 	}
 	// 
 	private static boolean chkIdent(String ident) {
-		String verified;
+		String verified = "";
 		char c = ident.charAt(0);
 		// starts with a letter
 		If(c >= a && c <= z || c >= A && c <=Z)
