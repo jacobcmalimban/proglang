@@ -19,11 +19,11 @@ Enter a string: devoved
 
 -- take two strings and test for equality
 testPalin :: [Char] -> [Char] -> Bool
-testPalin [] []             = True
-testPalin (x:xs) (y:ys)     = x == y && testPalin xs ys
-testPalin _ _               = False
+testPalin [] []             = True                          -- base case
+testPalin (x:xs) (y:ys)     = x == y && testPalin xs ys     -- test equality char by char
+testPalin _ _               = False                         -- catch all fail
 
--- determine output via boolean and concat the word
+-- if boolean is true, input string is a palindrome
 palinput :: Bool -> String -> String
 palinput x y 
     | x         = "\"" ++ y ++ "\"" ++ " is a palindrome\n"
