@@ -17,11 +17,13 @@ Enter a string: devoved
 
 -}
 
+-- take two strings and test for equality
 testPalin :: [Char] -> [Char] -> Bool
 testPalin [] []             = True
 testPalin (x:xs) (y:ys)     = x == y && testPalin xs ys
 testPalin _ _               = False
 
+-- determine output via boolean and concat the word
 palinput :: Bool -> String -> String
 palinput x y 
     | x         = "\"" ++ y ++ "\"" ++ " is a palindrome\n"
@@ -40,3 +42,5 @@ main = do
     npt <- getLine
     
     putStr ( palinput (testPalin npt (reverse npt)) npt ) 
+    --                  ^^ Test if npt == its reverse
+    --  if true, it is a palindrome
