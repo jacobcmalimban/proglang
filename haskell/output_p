@@ -1,4 +1,4 @@
-Enter a string: 
+Enter a string: Hi There
 "Hi There!" is not a palindrome
-Enter a string: 
+Enter a string: devoved
 "devoved" is a palindrome

@@ -24,8 +24,8 @@ testPalin _ _               = False
 
 palinput :: Bool -> String -> String
 palinput x y 
-    | x         = "\"" ++ y ++ "\"" ++ " is a palindrome"
-    | otherwise = "\"" ++ y ++ "\"" ++ " is not a palindrome"
+    | x         = "\"" ++ y ++ "\"" ++ " is a palindrome\n"
+    | otherwise = "\"" ++ y ++ "\"" ++ " is not a palindrome\n"
 
 {-
 main = do
@@ -36,7 +36,7 @@ main = do
 -}
 
 main = do
-    putStrLn "Enter a string: "
+    putStr "Enter a string: "
     npt <- getLine
     
-    putStrLn ( palinput (testPalin npt (reverse npt)) npt )
+    putStr ( palinput (testPalin npt (reverse npt)) npt ) 
