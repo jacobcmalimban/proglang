@@ -18,7 +18,7 @@ public class SUBLC3VM {
 	        try {
 	            // print to file?
 	            if(false) {
-	                PrintStream o = new PrintStream(new File("virtualOutput.txt"));
+	                PrintStream o = new PrintStream(new File("mySubLC3_Output.txt"));
 	                System.setOut(o);
 	            }
 	        } catch (FileNotFoundException e) {}
@@ -88,6 +88,7 @@ public class SUBLC3VM {
 
 	}
 
+	// helper method to take decoded instruction and find next method
 	private static void execute(String[] splits, String inst) {
 		switch(splits[0]) {
 			case "ADD" :
