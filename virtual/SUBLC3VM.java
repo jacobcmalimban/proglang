@@ -6,60 +6,91 @@ import java.util.*;
  */
 
 public class SUBLC3VM {
-	private static int basePointer, stackPointer;
-	private static String[] stack = new String[100];
+	private static final int MAX_MEMORY_SIZE = 500, asterisk = 46;
+	private static int stackPointer = 0;
+	private static String[] stack = new String[MAX_MEMORY_SIZE];
 	private static HashMap<String, Integer> vars = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> labels = new HashMap(vars);
 	private static Scanner scan = new Scanner(System.in);
 
 	public static void main(String[] args) {
 
-        try {
-            // print to file?
-            if(false) {
-                PrintStream o = new PrintStream(new File("virtualOutput.txt"));
-                System.setOut(o);
-            }
-        } catch (FileNotFoundException e) {}
+	        try {
+	            // print to file?
+	            if(false) {
+	                PrintStream o = new PrintStream(new File("virtualOutput.txt"));
+	                System.setOut(o);
+	            }
+	        } catch (FileNotFoundException e) {}
 
-		basePointer = stackPointer = 0;
-		
 		// scan in file name
-		System.out.print("Enter the file name:\n> ");
-		String fileName = "sampleLC3";
-		
+		//System.out.print("Enter the file name:\n> ");
+		String fileName = "mySubLC3_Prog.txt";
+
+
+
+
+
 		// for each line, read into stack
 		try {
 			FileReader fReader = new FileReader(fileName);
 			BufferedReader bReader = new BufferedReader(fReader);
 			String line;
 
+			System.out.println("Jacob Malimban, CSCI 4200, Fall 2019");
+			for(int i = 0; i < asterisk; i++)
+				System.out.print("*");
+			System.out.println();
+
 			while((line = bReader.readLine()) != null) {
 					if(stackPointer+1 > stack.length) {
 						System.out.println("Program is too large");
 						return;
 					}
-						
+
 					stack[stackPointer++] = line;
+					System.out.println("\t" + line);
 			}
 
 			// end of file reached
 			bReader.close();
 
-			System.out.println("Program read successfully!");
+			for(int i = 0; i < asterisk; i++)
+				System.out.print("*");
+
 		} catch (Exception e) {
 			System.out.println("Error - file unopenable or readers not initialized.");
 		}
-		
-		
-		// execute
-		for(int i = 0; i < stack.length; i++){
-			String instruction = stack[i];
-			if(instruction == "HALT")
-				return;
-			System.out.println(stack[i]);
+
+		// begin execution
+		stackPointer = 0;
+
+		while(true) {
+			String[] split;
+			String instruction = stack[stackPointer];
+			stackPointer++;
+
+			//decode
+			if(instruction.charAt(0) == ';') { // ignore comments
+				continue;
+			} else {
+				split = instruction.split(" ");
+				System.out.println(split[0]);
+			}
+
+			//execute
+			if(split[0].equals("HALT"))
+				break;
+//			execute(splits)
 	        }
+
+
 	}
 
+//	private static void execute(String[] splits)
+
+	// Take two var/int const sources
+	// Store sum in dest variable
 	private static void ADD(String dest, String src1, String src2) {
 		int num1, num2;
 		if(vars.containsKey(src1))  //src1 is a var
@@ -73,6 +104,8 @@ public class SUBLC3VM {
 		vars.put(dest, num1 + num2);
 	} 
 
+	// Take two var/int const sources
+	// Store difference in dest variable
 	private static void SUB(String dest, String src1, String src2) {
 		int num1, num2;
 		if(vars.containsKey(src1))  //src1 is a var
@@ -86,6 +119,8 @@ public class SUBLC3VM {
 		vars.put(dest, num1 - num2);
 	} 
 
+	// Take two var/int const sources
+	// Store product in dest variable
 	private static void MUL(String dest, String src1, String src2) {
 		int num1, num2;
 		if(vars.containsKey(src1))  //src1 is a var
@@ -99,6 +134,8 @@ public class SUBLC3VM {
 		vars.put(dest, num1 * num2);
 	}
 
+	// Take two var/int const sources
+	// Store result in dest variable
 	private static void DIV(String dest, String src1, String src2) {
 		int num1, num2;
 		if(vars.containsKey(src1))  //src1 is a var
@@ -112,6 +149,7 @@ public class SUBLC3VM {
 		vars.put(dest, num1 /num2);
 	}
 
+	// Accept input and store in var
 	private static boolean IN(String var) {
 		int in;
 		try{
@@ -124,20 +162,34 @@ public class SUBLC3VM {
 		return true;
 	}
 
+	// out is either a variable, String, or int
+	// output value
 	private static void OUT(String out) {
+		String output = out;
 		if(vars.containsKey(out))
-			out = "" + vars.get(out);
-		else
-			out = "Variable not found";
-		System.out.println(out);
+			output = "" + vars.get(out);
+
+		else if(out.charAt(0) == '"') //remove quotes
+			output = out.substring(1, out.length() -1);
+
+		System.out.println(output);
 	}
 
+	// stores source data (variable or int) in destination var
 	private static void STO (String var, String data) {
+		int src;
+		if(vars.containsKey(data)) // source data is var
+			src = vars.get(data);
+		else
+			src = Integer.parseInt(data);
+
 		// hashmaps either add or update
-		vars.put(var, Integer.parseInt(data));
+		vars.put(var, src);
 	}
 
-	// control instructions
+	/* control instructions */
+
+	// helper method to findLabel
 	private static int findLabel(String label) {
 		for(int i = 0; i < stack.length; i++) {
 			if(stack[i].equals(label))
@@ -146,33 +198,42 @@ public class SUBLC3VM {
 		return -1;
 	}
 
+	// if variable is negative, jump to label
 	private static void BRn(String var, String label) {
 		if(vars.get(var) < 0)
-			basePointer = findLabel(label);
+			stackPointer = findLabel(label);
 	} 
+
+	// if variable is zero, jump to label
 	private static void BRz(String var, String label) {
 		if(vars.get(var) == 0)
-			basePointer = findLabel(label);
+			stackPointer = findLabel(label);
 	} 
+
+	// if variable is positive, jump to label
 	private static void BRp(String var, String label) {
 		if(vars.get(var) > 0)
-			basePointer = findLabel(label);
+			stackPointer = findLabel(label);
 	} 
+
+	// if variable is zero or positive, jump to label
 	private static void BRzp(String var, String label) {
 		if(vars.get(var) > -1)
-			basePointer = findLabel(label);
+			stackPointer = findLabel(label);
 	} 
+
+	// if variable is zero or negative, jump to label
 	private static void BRzn(String var, String label) {
 		if(vars.get(var) < 1)
-			basePointer = findLabel(label);
+			stackPointer = findLabel(label);
 	}
 
-	// other controls
+	// jump to label
 	private static void JMP(String label) {
-		basePointer = findLabel(label);
+		stackPointer = findLabel(label);
 	}
 
-	// 
+	// helper method to verify legal ident
 	private static boolean chkIdent(String ident) {
 		String verified = "";
 		char fc = ident.charAt(0);
