@@ -12,12 +12,13 @@ public class SUBLC3VM {
 	private static HashMap<String, Integer> vars = new HashMap<String, Integer>();
 	private static HashMap<String, Integer> labels = new HashMap(vars);
 	private static Scanner scan = new Scanner(System.in);
+	private static boolean errChk = true;
 
 	public static void main(String[] args) {
 
 	        try {
 	            // print to file?
-	            if(false) {
+	            if(true) {
 	                PrintStream o = new PrintStream(new File("mySubLC3_Output.txt"));
 	                System.setOut(o);
 	            }
@@ -25,11 +26,8 @@ public class SUBLC3VM {
 
 		// scan in file name
 		//System.out.print("Enter the file name:\n> ");
+		//String fileName = scan.nextLine();
 		String fileName = "mySubLC3_Prog.txt";
-
-
-
-
 
 		// for each line, read into stack
 		try {
@@ -82,40 +80,89 @@ public class SUBLC3VM {
 			//execute
 			if(split[0].equals("HALT")) // end after halt
 				break;
-			execute(split, instruction);
+
+			boolean success = execute(split, instruction);
+			if(!success) {
+				System.out.println("Error Detected");
+				break;
+			}
 	        }
 
 
 	}
 
 	// helper method to take decoded instruction and find next method
-	private static void execute(String[] splits, String inst) {
+	private static boolean execute(String[] splits, String inst) {
 		switch(splits[0]) {
 			case "ADD" :
+				if(errChk)
+					if(splits.length < 4 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				ADD(splits[1], splits[2], splits[3]);
 				break;
 			case "BRn" :
+				if(errChk)
+					if(splits.length < 3 || !chkIdent(splits[2])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				BRn(splits[1], splits[2]);
 				break;
 			case "BRp" :
+				if(errChk)
+					if(splits.length < 3 || !chkIdent(splits[2])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				BRp(splits[1], splits[2]);
 				break;
 			case "BRz" :
+				if(errChk)
+					if(splits.length < 3 || !chkIdent(splits[2])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				BRz(splits[1], splits[2]);
 				break;
 			case "BRzn" :
+				if(errChk)
+					if(splits.length < 3 || !chkIdent(splits[2])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				BRp(splits[1], splits[2]);
 				break;
 			case "DIV" :
+				if(errChk)
+					if(splits.length < 4 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				DIV(splits[1], splits[2], splits[3]);
 				break;
 			case "IN" :
-				IN(splits[1]);
-				break;
+				if(errChk)
+					if(splits.length < 2 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
+				return IN(splits[1]);
 			case "JMP" :
+				if(errChk)
+					if(splits.length < 2 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				JMP(splits[1]);
 				break;
 			case "MUL" :
+				if(errChk)
+					if(splits.length < 4 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				MUL(splits[1], splits[2], splits[3]);
 				break;
 			case "OUT" :
@@ -123,16 +170,28 @@ public class SUBLC3VM {
 				OUT(str);
 				break;
 			case "STO" :
+				if(errChk)
+					if(splits.length < 3 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				STO(splits[1], splits[2]);
 				break;
 			case "SUB" :
+				if(errChk)
+					if(splits.length < 4 || !chkIdent(splits[1])) {
+						System.out.println(inst + "\t# too little arguments or invalid ident");
+						return false;
+					}
 				SUB(splits[1], splits[2], splits[3]);
 				break;
 			default:
 				if(chkIdent(splits[0]))
 					break;
 				System.out.println("Statement invalid");
+				return false;
 		}
+		return true;
 	}
 
 	// Take two var/int const sources
@@ -201,8 +260,11 @@ public class SUBLC3VM {
 		try{
 		    in = Integer.parseInt(scan.nextLine());
 		}catch (NumberFormatException ex) {
-			System.out.println("Invalid number, try again:");
-			return IN(var);
+			if(errChk) {
+				System.out.println("Invalid number, try again:");
+				return IN(var);
+			}
+			return false;
 		}
 		vars.put(var, in);
 		return true;
