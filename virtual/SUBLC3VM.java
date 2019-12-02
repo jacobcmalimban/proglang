@@ -57,6 +57,7 @@ public class SUBLC3VM {
 
 			for(int i = 0; i < asterisk; i++)
 				System.out.print("*");
+			System.out.println();
 
 		} catch (Exception e) {
 			System.out.println("Error - file unopenable or readers not initialized.");
@@ -75,19 +76,63 @@ public class SUBLC3VM {
 				continue;
 			} else {
 				split = instruction.split(" ");
-				System.out.println(split[0]);
+//				System.out.println(split[0]);
 			}
 
 			//execute
-			if(split[0].equals("HALT"))
+			if(split[0].equals("HALT")) // end after halt
 				break;
-//			execute(splits)
+			execute(split, instruction);
 	        }
 
 
 	}
 
-//	private static void execute(String[] splits)
+	private static void execute(String[] splits, String inst) {
+		switch(splits[0]) {
+			case "ADD" :
+				ADD(splits[1], splits[2], splits[3]);
+				break;
+			case "BRn" :
+				BRn(splits[1], splits[2]);
+				break;
+			case "BRp" :
+				BRp(splits[1], splits[2]);
+				break;
+			case "BRz" :
+				BRz(splits[1], splits[2]);
+				break;
+			case "BRzn" :
+				BRp(splits[1], splits[2]);
+				break;
+			case "DIV" :
+				DIV(splits[1], splits[2], splits[3]);
+				break;
+			case "IN" :
+				IN(splits[1]);
+				break;
+			case "JMP" :
+				JMP(splits[1]);
+				break;
+			case "MUL" :
+				MUL(splits[1], splits[2], splits[3]);
+				break;
+			case "OUT" :
+				String str = inst.substring(4);
+				OUT(str);
+				break;
+			case "STO" :
+				STO(splits[1], splits[2]);
+				break;
+			case "SUB" :
+				SUB(splits[1], splits[2], splits[3]);
+				break;
+			default:
+				if(chkIdent(splits[0]))
+					break;
+				System.out.println("Statement invalid");
+		}
+	}
 
 	// Take two var/int const sources
 	// Store sum in dest variable
